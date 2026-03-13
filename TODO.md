@@ -33,13 +33,13 @@
 
 ## Step 3: 認証（NextAuth.js v5 + Google OAuth）
 
-- [ ] **3-1** `src/lib/auth.ts` に NextAuth.js 設定を実装
+- [x] **3-1** `src/lib/auth.ts` に NextAuth.js 設定を実装
   - Google Provider + PrismaAdapter 設定
   - `session.user.id` を返す `callbacks.session` を実装
-- [ ] **3-2** `src/app/api/auth/[...nextauth]/route.ts` に `handlers` をエクスポート
-- [ ] **3-3** `src/middleware.ts` でルート保護を実装（未認証 → `/login` リダイレクト）
-- [ ] **3-4** `src/types/next-auth.d.ts` で `Session` 型に `user.id` を追加
-- [ ] **3-5** Google Cloud Console でリダイレクト URI を登録
+- [x] **3-2** `src/app/api/auth/[...nextauth]/route.ts` に `handlers` をエクスポート
+- [x] **3-3** `src/middleware.ts` でルート保護を実装（未認証 → `/login` リダイレクト）
+- [x] **3-4** `src/types/next-auth.d.ts` で `Session` 型に `user.id` を追加
+- [x] **3-5** Google Cloud Console でリダイレクト URI を登録
   - 開発: `http://localhost:3000/api/auth/callback/google`
   - 本番: `https://<Cloud Run URL>/api/auth/callback/google`
 
