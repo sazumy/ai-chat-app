@@ -1,6 +1,7 @@
 # AI友達チャットボット — 実装 TODO
 
 ## 進め方
+
 依存関係の順（インフラ → データ → 認証 → AI → UI → デプロイ）で進める。
 
 ---
@@ -19,14 +20,14 @@
 
 ## Step 2: DB スキーマ・Prisma セットアップ
 
-- [ ] **2-1** `prisma/schema.prisma` を作成
+- [x] **2-1** `prisma/schema.prisma` を作成
   - NextAuth.js 必須テーブル: `Account`, `VerificationToken`
   - アプリテーブル: `User`, `ChatSession`, `Message`
   - ※ `Session` 名は NextAuth と衝突するため `ChatSession` を使う
-- [ ] **2-2** `src/lib/db/prisma.ts` にシングルトン Prisma クライアントを実装
-- [ ] **2-3** ローカル開発用 PostgreSQL を `docker-compose.dev.yml` で構築
-- [ ] **2-4** `npx prisma migrate dev --name init` でマイグレーション実行
-- [ ] **2-5** `npx prisma generate` で Prisma クライアント生成
+- [x] **2-2** `src/lib/db/prisma.ts` にシングルトン Prisma クライアントを実装
+- [x] **2-3** ローカル開発用 PostgreSQL を `docker-compose.dev.yml` で構築
+- [x] **2-4** `npx prisma migrate dev --name init` でマイグレーション実行
+- [x] **2-5** `npx prisma generate` で Prisma クライアント生成
 
 ---
 
@@ -130,22 +131,22 @@
 
 ## 注意事項・既知リスク
 
-| リスク | 対処法 |
-|--------|--------|
-| NextAuth.js v5 の API 変更 | 公式ドキュメント（auth.js.dev）を常に参照 |
-| Prisma と Edge Runtime の非互換 | API Route に `export const runtime = 'nodejs'` を必ず明示 |
-| ストリーミング中のエラー | `try/catch` でエラー時は DB 保存をスキップし SSE でエラー通知 |
-| Cloud SQL 接続プール枯渇 | `DATABASE_URL` に `?connection_limit=1` を追加 |
-| `Session` モデル名の衝突 | アプリ用チャットセッションは `ChatSession` という名前を使用 |
+| リスク                          | 対処法                                                        |
+| ------------------------------- | ------------------------------------------------------------- |
+| NextAuth.js v5 の API 変更      | 公式ドキュメント（auth.js.dev）を常に参照                     |
+| Prisma と Edge Runtime の非互換 | API Route に `export const runtime = 'nodejs'` を必ず明示     |
+| ストリーミング中のエラー        | `try/catch` でエラー時は DB 保存をスキップし SSE でエラー通知 |
+| Cloud SQL 接続プール枯渇        | `DATABASE_URL` に `?connection_limit=1` を追加                |
+| `Session` モデル名の衝突        | アプリ用チャットセッションは `ChatSession` という名前を使用   |
 
 ---
 
 ## 重要ファイル（実装の起点）
 
-| ファイル | 役割 |
-|----------|------|
-| `prisma/schema.prisma` | 全テーブル定義の起点。最初に確定させる |
-| `src/lib/auth.ts` | NextAuth.js v5 の設定。セッション管理の中心 |
-| `src/lib/ai/persona.ts` | AIキャラクターの一元管理。システムプロンプト・モデル選択 |
-| `src/app/api/chat/route.ts` | ストリーミング処理・DB保存・Claude API 統合の中核 |
+| ファイル                        | 役割                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| `prisma/schema.prisma`          | 全テーブル定義の起点。最初に確定させる                       |
+| `src/lib/auth.ts`               | NextAuth.js v5 の設定。セッション管理の中心                  |
+| `src/lib/ai/persona.ts`         | AIキャラクターの一元管理。システムプロンプト・モデル選択     |
+| `src/app/api/chat/route.ts`     | ストリーミング処理・DB保存・Claude API 統合の中核            |
 | `src/components/ChatWindow.tsx` | SSE 受信・状態管理・UI更新のメインクライアントコンポーネント |
