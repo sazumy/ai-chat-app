@@ -56,14 +56,14 @@
 
 ## Step 5: UI コンポーネント
 
-- [ ] **5-1** `src/components/MessageBubble.tsx` を実装
+- [x] **5-1** `src/components/MessageBubble.tsx` を実装
   - ユーザー／アシスタントで左右を切り替えるバブル UI
   - ストリーミング中のカーソルアニメーション
-- [ ] **5-2** `src/components/InputBar.tsx` を実装
+- [x] **5-2** `src/components/InputBar.tsx` を実装
   - Enter 送信 / Shift+Enter 改行
   - テキストエリアの高さ自動調整
   - 送信中の disabled 状態
-- [ ] **5-3** `src/components/ChatWindow.tsx` を実装（メインクライアントコンポーネント）
+- [x] **5-3** `src/components/ChatWindow.tsx` を実装（メインクライアントコンポーネント）
   - 初期メッセージ・セッション ID を props で受け取る
   - SSE ストリームを `ReadableStream` / `TextDecoder` で受信・逐次表示
   - メッセージ追加時の自動スクロール（`useRef`）
