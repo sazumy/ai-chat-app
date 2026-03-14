@@ -73,14 +73,14 @@
 
 ## Step 6: API Routes
 
-- [ ] **6-1** `src/app/api/chat/route.ts` にストリーミングエンドポイントを実装
+- [x] **6-1** `src/app/api/chat/route.ts` にストリーミングエンドポイントを実装
   - `export const runtime = 'nodejs'`（Prisma のため必須）
   - 認証チェック → ChatSession 取得/作成 → 履歴取得 → ユーザーメッセージ DB 保存
   - `anthropic.messages.stream()` でストリーミング開始
   - SSE 形式（`text/event-stream`）でチャンクを送信
   - ストリーム完了後にアシスタントメッセージを DB 保存
   - セッション ID を `{ type: 'session', sessionId }` で最初に送信
-- [ ] **6-2** `src/app/api/messages/route.ts` に履歴取得エンドポイントを実装
+- [x] **6-2** `src/app/api/messages/route.ts` に履歴取得エンドポイントを実装
   - `GET /api/messages?sessionId=xxx`
   - 未指定の場合は最新セッションを返す
 
