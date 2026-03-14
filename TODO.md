@@ -109,8 +109,8 @@
   - `deps` → `builder` → `runner` の3ステージ
   - `deps` ステージで `npx prisma generate` を実行
 - [x] **8-3** `.dockerignore` を作成（`node_modules`, `.next`, `.env*` 等を除外）
-- [ ] **8-4** Artifact Registry リポジトリを作成
-- [ ] **8-5** Cloud SQL（PostgreSQL）インスタンスを作成
+- [x] **8-4** Artifact Registry リポジトリを作成
+- [x] **8-5** Cloud SQL（PostgreSQL）インスタンスを作成
 - [ ] **8-6** Cloud Run サービスをデプロイ
   - `--add-cloudsql-instances` で Cloud SQL 接続を有効化
   - `--set-secrets` で Secret Manager からシークレットを注入
