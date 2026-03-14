@@ -104,11 +104,11 @@
 
 ## Step 8: Docker・デプロイ設定
 
-- [ ] **8-1** `next.config.ts` に `output: 'standalone'` を追加
-- [ ] **8-2** マルチステージ `Dockerfile` を作成
+- [x] **8-1** `next.config.ts` に `output: 'standalone'` を追加
+- [x] **8-2** マルチステージ `Dockerfile` を作成
   - `deps` → `builder` → `runner` の3ステージ
   - `deps` ステージで `npx prisma generate` を実行
-- [ ] **8-3** `.dockerignore` を作成（`node_modules`, `.next`, `.env*` 等を除外）
+- [x] **8-3** `.dockerignore` を作成（`node_modules`, `.next`, `.env*` 等を除外）
 - [ ] **8-4** Artifact Registry リポジトリを作成
 - [ ] **8-5** Cloud SQL（PostgreSQL）インスタンスを作成
 - [ ] **8-6** Cloud Run サービスをデプロイ

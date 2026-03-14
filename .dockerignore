@@ -1,0 +1,26 @@
+# 依存関係・ビルド成果物
+node_modules
+.next
+
+# 環境変数（シークレット）
+.env
+.env.*
+
+# 開発用 Docker 設定
+docker-compose*.yml
+
+# Git
+.git
+.gitignore
+
+# エディタ・OS
+.DS_Store
+*.swp
+*.swo
+
+# ログ
+*.log
+npm-debug.log*
+
+# テスト
+coverage
