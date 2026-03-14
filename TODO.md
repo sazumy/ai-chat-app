@@ -47,8 +47,8 @@
 
 ## Step 4: AI ペルソナ・Claude API 統合
 
-- [ ] **4-1** `src/lib/ai/client.ts` に Anthropic クライアントを実装（サーバーサイド専用）
-- [ ] **4-2** `src/lib/ai/persona.ts` にペルソナを定義
+- [x] **4-1** `src/lib/ai/client.ts` に Anthropic クライアントを実装（サーバーサイド専用）
+- [x] **4-2** `src/lib/ai/persona.ts` にペルソナを定義
   - キャラクター名・口調・性格の設定
   - `SYSTEM_PROMPT`, `MODEL`（`claude-sonnet-4-6`）, `MAX_TOKENS`（1024）, `MAX_CONTEXT_TURNS`（20）を定数で管理
 
