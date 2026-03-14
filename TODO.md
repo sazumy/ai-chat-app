@@ -88,17 +88,17 @@
 
 ## Step 7: ページ実装
 
-- [ ] **7-1** `src/app/layout.tsx` を実装
+- [x] **7-1** `src/app/layout.tsx` を実装
   - SessionProvider でラップ
   - 日本語フォント（Noto Sans JP）設定
-- [ ] **7-2** `src/app/(auth)/login/page.tsx` を実装
+- [x] **7-2** `src/app/(auth)/login/page.tsx` を実装
   - Google サインインボタン
   - シンプルなカード型 UI
-- [ ] **7-3** `src/app/chat/page.tsx` を実装（Server Component）
+- [x] **7-3** `src/app/chat/page.tsx` を実装（Server Component）
   - `auth()` でユーザー取得
   - Prisma で最新 ChatSession と履歴を取得
   - `ChatWindow` に初期データを props として渡す
-- [ ] **7-4** ヘッダーにユーザー情報・ログアウトボタンを追加（`signOut` Server Action 使用）
+- [x] **7-4** ヘッダーにユーザー情報・ログアウトボタンを追加（`signOut` Server Action 使用）
 
 ---
 
