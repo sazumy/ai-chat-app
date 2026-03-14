@@ -1,15 +1,16 @@
-import { auth } from "@/lib/auth"
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 
-export default auth((req) => {
+// Prisma を含まない Edge 対応 config だけを使う
+export default NextAuth(authConfig).auth((req) => {
   if (!req.auth) {
-    const loginUrl = new URL("/login", req.nextUrl.origin)
-    return Response.redirect(loginUrl)
+    const loginUrl = new URL("/login", req.nextUrl.origin);
+    return Response.redirect(loginUrl);
   }
-})
+});
 
 export const config = {
-  // /api/auth, /_next, /favicon.ico, /login は除外
   matcher: [
     "/((?!api/auth|_next/static|_next/image|favicon\\.ico|login).*)",
   ],
-}
+};
