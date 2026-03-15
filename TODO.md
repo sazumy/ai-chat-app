@@ -111,21 +111,29 @@
 - [x] **8-3** `.dockerignore` を作成（`node_modules`, `.next`, `.env*` 等を除外）
 - [x] **8-4** Artifact Registry リポジトリを作成
 - [x] **8-5** Cloud SQL（PostgreSQL）インスタンスを作成
-- [ ] **8-6** Cloud Run サービスをデプロイ
+- [x] **8-6** Cloud Run サービスをデプロイ
   - `--add-cloudsql-instances` で Cloud SQL 接続を有効化
   - `--set-secrets` で Secret Manager からシークレットを注入
+  - Service URL: `https://ai-friend-chat-871765195344.asia-northeast1.run.app`
+  - ※ `src/lib/auth.ts` に `trustHost: true` を追加済み（UntrustedHost エラー対応）
 
 ---
 
 ## Step 9: 環境変数・Secret Manager 設定
 
-- [ ] **9-1** Secret Manager に各シークレットを登録
+- [x] **9-1** Secret Manager に各シークレットを登録
   - `ANTHROPIC_API_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
   - `NEXTAUTH_SECRET`（`openssl rand -base64 32` で生成）
   - `DATABASE_URL`（Cloud SQL Unix ソケット形式）
-- [ ] **9-2** Cloud Run サービスアカウントに `Secret Manager Secret Accessor` 権限を付与
-- [ ] **9-3** `NEXTAUTH_URL` をカスタムドメインまたは Cloud Run URL に設定
-- [ ] **9-4** Google Cloud Console の OAuth リダイレクト URI に本番 URL を追加
+  - ⚠️ `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` が初期値プレースホルダーだったため実際の値に更新済み
+  - ⚠️ `ANTHROPIC_API_KEY` / `NEXTAUTH_SECRET` も念のため確認推奨（`gcloud secrets versions access latest --secret=<NAME>`）
+- [x] **9-2** Cloud Run サービスアカウントに `Secret Manager Secret Accessor` 権限を付与
+- [x] **9-3** `NEXTAUTH_URL` をカスタムドメインまたは Cloud Run URL に設定
+  - `https://ai-friend-chat-871765195344.asia-northeast1.run.app`
+- [x] **9-4** Google Cloud Console の OAuth リダイレクト URI に本番 URL を追加
+  - `http://localhost:3000/api/auth/callback/google`
+  - `https://ai-friend-chat-871765195344.asia-northeast1.run.app/api/auth/callback/google`
+  - 承認済み JavaScript 生成元も両方追加済み
 
 ---
 

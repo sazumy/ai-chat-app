@@ -6,6 +6,7 @@ import { authConfig } from "./auth.config";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
+  trustHost: true,
   // JWT セッション: Edge Runtime の middleware でも session token を検証できる
   session: { strategy: "jwt" },
   callbacks: {
