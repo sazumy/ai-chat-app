@@ -64,4 +64,3 @@ logs:
 		--region $(REGION) \
 		--project $(PROJECT_ID) \
 		--limit 50
-1
