@@ -140,7 +140,23 @@ DATABASE_URL=  # PostgreSQL (Cloud SQL)
 
 ## 開発コマンド
 
+**Makefile が用意されているので、以下の `make` コマンドを使うこと。** 直接 npm / gcloud コマンドを使うのではなく、必ず Makefile 経由で実行する。
+
+| コマンド | 内容 |
+|---|---|
+| `make init` | `npm install` + `prisma generate` |
+| `make migrate` | DBマイグレーション実行 |
+| `make dev` | 開発サーバー起動（バックグラウンド） |
+| `make stop` | 開発サーバー停止（ポート3000を終了） |
+| `make build` | Next.js プロダクションビルド |
+| `make docker-build` | Dockerイメージをローカルビルド |
+| `make push` | DockerイメージをArtifact Registryへpush |
+| `make deploy` | push済みイメージをCloud Runへデプロイ |
+| `make release` | `push` + `deploy` を一括実行 |
+| `make logs` | Cloud Runの最新ログを表示 |
+
 ```bash
+# 参考: 直接実行する場合のコマンド（通常は make を使うこと）
 # 依存関係インストール
 npm install
 
