@@ -23,7 +23,7 @@ export default async function ChatPage() {
     ? await prisma.message.findMany({
         where: { chatSessionId: chatSession.id },
         orderBy: { createdAt: "asc" },
-        select: { id: true, role: true, content: true },
+        select: { id: true, role: true, content: true, imageData: true },
       })
     : [];
 
@@ -31,6 +31,7 @@ export default async function ChatPage() {
     id: m.id,
     role: m.role as "user" | "assistant",
     content: m.content,
+    imageData: m.imageData,
   }));
 
   return (

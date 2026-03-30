@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/prisma";
 import { anthropic } from "@/lib/ai/client";
 import { SYSTEM_PROMPT, MODEL, MAX_TOKENS, MAX_CONTEXT_TURNS } from "@/lib/ai/persona";
+import Anthropic from "@anthropic-ai/sdk";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,46 @@ function sseChunk(data: unknown): Uint8Array {
 
 function sseDone(): Uint8Array {
   return encoder.encode("data: [DONE]\n\n");
+}
+
+type SupportedMimeType = "image/jpeg" | "image/png" | "image/gif" | "image/webp";
+const SUPPORTED_MIME_TYPES: readonly SupportedMimeType[] = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+];
+
+function parseDataUrl(dataUrl: string): { mimeType: string; data: string } | null {
+  const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/s);
+  return match ? { mimeType: match[1], data: match[2] } : null;
+}
+
+function buildMessageContent(
+  text: string,
+  imageDataUrl: string | null
+): Anthropic.MessageParam["content"] {
+  if (!imageDataUrl) return text;
+
+  const parsed = parseDataUrl(imageDataUrl);
+  const blocks: Array<Anthropic.ImageBlockParam | Anthropic.TextBlockParam> = [];
+
+  if (parsed && SUPPORTED_MIME_TYPES.includes(parsed.mimeType as SupportedMimeType)) {
+    blocks.push({
+      type: "image",
+      source: {
+        type: "base64",
+        media_type: parsed.mimeType as SupportedMimeType,
+        data: parsed.data,
+      },
+    });
+  }
+
+  if (text.trim()) {
+    blocks.push({ type: "text", text: text.trim() });
+  }
+
+  return blocks.length > 0 ? blocks : text;
 }
 
 export async function POST(req: Request) {
@@ -28,12 +69,15 @@ export async function POST(req: Request) {
   // ── リクエスト解析 ───────────────────────────────────────────────
   let message: string;
   let sessionId: string | null;
+  let imageData: string | null;
   try {
     const body = await req.json();
-    message = body.message;
+    message = typeof body.message === "string" ? body.message : "";
     sessionId = body.sessionId ?? null;
-    if (typeof message !== "string" || !message.trim()) {
-      throw new Error("Invalid message");
+    imageData = typeof body.imageData === "string" ? body.imageData : null;
+
+    if (!message.trim() && !imageData) {
+      throw new Error("Either message or image is required");
     }
   } catch {
     return new Response(JSON.stringify({ error: "Bad Request" }), {
@@ -59,6 +103,7 @@ export async function POST(req: Request) {
     where: { chatSessionId: chatSession.id },
     orderBy: { createdAt: "desc" },
     take: MAX_CONTEXT_TURNS,
+    select: { role: true, content: true, imageData: true },
   });
   history.reverse();
 
@@ -69,6 +114,7 @@ export async function POST(req: Request) {
       userId,
       role: "user",
       content: message.trim(),
+      imageData,
     },
   });
 
@@ -82,12 +128,15 @@ export async function POST(req: Request) {
         );
 
         // Claude API ストリーミング開始
-        const claudeMessages = [
+        const claudeMessages: Anthropic.MessageParam[] = [
           ...history.map((m) => ({
             role: m.role as "user" | "assistant",
-            content: m.content,
+            content: buildMessageContent(m.content, m.imageData ?? null),
           })),
-          { role: "user" as const, content: message.trim() },
+          {
+            role: "user" as const,
+            content: buildMessageContent(message.trim(), imageData),
+          },
         ];
 
         const claudeStream = anthropic.messages.stream({

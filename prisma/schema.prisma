@@ -91,6 +91,7 @@ model Message {
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   role          String // "user" | "assistant"
   content       String
+  imageData     String?     @db.Text // data URL format: "data:image/jpeg;base64,..."
 
   createdAt DateTime @default(now())
 }

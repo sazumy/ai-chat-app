@@ -28,6 +28,7 @@ export default function ChatWindow({
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(initialSessionId);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -38,16 +39,20 @@ export default function ChatWindow({
 
   const handleSend = async () => {
     const text = input.trim();
-    if (!text || isStreaming) return;
+    if ((!text && !selectedImage) || isStreaming) return;
+
+    const imageData = selectedImage;
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
       role: "user",
       content: text,
+      imageData,
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setSelectedImage(null);
     setIsStreaming(true);
 
     const assistantId = crypto.randomUUID();
@@ -62,7 +67,7 @@ export default function ChatWindow({
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, sessionId }),
+        body: JSON.stringify({ message: text, sessionId, imageData }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -147,6 +152,9 @@ export default function ChatWindow({
         onChange={setInput}
         onSend={handleSend}
         disabled={isStreaming}
+        selectedImage={selectedImage}
+        onImageSelect={setSelectedImage}
+        onImageClear={() => setSelectedImage(null)}
       />
     </div>
   );

@@ -42,7 +42,7 @@ export async function GET(req: Request) {
     const messages = await prisma.message.findMany({
       where: { chatSessionId: chatSession.id },
       orderBy: { createdAt: "asc" },
-      select: { id: true, role: true, content: true },
+      select: { id: true, role: true, content: true, imageData: true },
     });
 
     return new Response(
